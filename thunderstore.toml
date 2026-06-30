@@ -5,7 +5,7 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "HotStreak"
 name = "More_Infusion_Scaling"
-versionNumber = "0.0.1"
+versionNumber = "1.0.0"
 description = "Make all Infusion Boons Scale."
 websiteUrl = "https://github.com/hotstreak164/Hades-II-Scaling-Infusions"
 containsNsfwContent = false
