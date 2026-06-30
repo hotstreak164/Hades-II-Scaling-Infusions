@@ -11,11 +11,13 @@ Hades II mod that make all infusion boons scale.
   - Damage Recovered per Fire Boon: 10% (over 5 sec.)
 - Zeus' Air Quality now scales min damage.
   - Min damage per Air Boon: 10
-### Planned
 - Demeter's Frosty Veneer now scales damage reduction.
-  - Heavy damage rudction per 2 Water Boons: -3
+  - Heavy damage rudction per Water Boon: -2
+### Planned
 - Hera's Proper Upbringing now scales rarity.
-  - Rarity up per 2 of each element
+  - Rare at 2 of each element
+  - Epic at 4 of each element
+  - Heroic at 8 of each element
 - Hermes' Tall Order now scales for each set of 8 of an element.
   - Infused Damage per 8 Elements: +25%
 

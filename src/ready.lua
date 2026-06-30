@@ -8,15 +8,15 @@
 --	values and functions later defined in `reload.lua`.
 
 -- These are some sample code snippets of what you can do with our modding framework:
-local file = rom.path.combine(rom.paths.Content, 'Game/Text/en/ShellText.en.sjson')
-sjson.hook(file, function(data)
-	return sjson_ShellText(data)
-end)
+-- local file = rom.path.combine(rom.paths.Content, 'Game/Text/en/ShellText.en.sjson')
+-- sjson.hook(file, function(data)
+-- 	return sjson_ShellText(data)
+-- end)
 
-modutil.mod.Path.Wrap("SetupMap", function(base, ...)
-	prefix_SetupMap()
-	return base(...)
-end)
+-- modutil.mod.Path.Wrap("SetupMap", function(base, ...)
+-- 	prefix_SetupMap()
+-- 	return base(...)
+-- end)
 
 -- Rallying Cry: ElementalOlympianDamageBoon
 local olympianDmg =
@@ -157,6 +157,7 @@ local Rally =
 }
 
 
+-- Air Quality: ElementalDamageFloorBoon
 local dmgFloor =
 {
 	ElementalDamageFloorBoon = 
@@ -206,8 +207,78 @@ local dmgFloor =
 	},
 }
 
+
+-- Frosty Veneer: ElementalDamageCapBoon
+local dmgCap =
+{
+	ElementalDamageCapBoon = 
+	{
+		InheritFrom = {"UnityTrait"},
+		Icon = "Boon_Demeter_37",
+		BlockStacking = true,
+		GameStateRequirements = 
+		{
+			{
+				Path = { "CurrentRun", "Hero", "Elements", "Water" },
+				Comparison = ">=",
+				Value = 4,
+			},
+		},
+		ElementalMultipliers = 
+		{
+			Water = true,
+		},		
+		RarityLevels =
+		{
+			Common =
+			{
+				Multiplier = 1
+			},
+		},
+		ActivatedDamageReductionThreshold = 20,
+		ActivatedDamageReduction = 
+		{ 
+			BaseValue = 2,
+			MultipliedByElement = "Water",
+			AsInt = true,
+			MinValue = -1,
+			MinMultiplier = -2,
+			IdenticalMultiplier =
+			{
+				Value = -1,
+			},
+		},
+		StatLines =
+		{
+			"DamageCapStatDisplay1",
+		},
+		ExtractValues =
+		{
+			{
+				Key = "ActivatedDamageReductionThreshold",
+				ExtractAs = "TooltipCap",
+			},
+			{
+				Key = "ActivatedDamageReduction",
+				ExtractAs = "TooltipReduction",
+				SkipAutoExtract = true
+			},
+		}
+	},
+
+}
+
 game.OverwriteTableKeys(game.TraitData, olympianDmg)
 game.OverwriteTableKeys(game.TraitData, Rally)
 game.OverwriteTableKeys(game.TraitData, dmgFloor)
+game.OverwriteTableKeys(game.TraitData, dmgCap)
+
 
 game.SetupRunData()
+
+modutil.mod.Path.Wrap("UpdateHeroTraitDictionary", function (base)
+    if game.CurrentRun and game.CurrentRun.Hero and game.CurrentRun.Hero.FirstTraitWithPropertyCache then
+        game.CurrentRun.Hero.FirstTraitWithPropertyCache.ActivatedDamageFloor = nil
+    end
+    return base()
+end)
