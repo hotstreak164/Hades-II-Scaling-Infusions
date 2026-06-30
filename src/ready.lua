@@ -18,24 +18,25 @@
 -- 	return base(...)
 -- end)
 
--- Rallying Cry: ElementalOlympianDamageBoon
-local olympianDmg =
+
+-- Air Quality: ElementalDamageFloorBoon
+local dmgFloor =
 {
-	ElementalOlympianDamageBoon =
+	ElementalDamageFloorBoon = 
 	{
 		InheritFrom = {"UnityTrait"},
-		Icon = "Boon_Ares_40",
+		Icon = "Boon_Zeus_31",
 		GameStateRequirements = 
 		{
 			{
-				Path = { "CurrentRun", "Hero", "Elements", "Earth" },
+				Path = { "CurrentRun", "Hero", "Elements", "Air" },
 				Comparison = ">=",
-				Value = 4,
+				Value = 3,
 			},
 		},
 		ElementalMultipliers =
 		{
-			Earth = true,
+			Air = true,
 		},
 		RarityLevels =
 		{
@@ -44,46 +45,25 @@ local olympianDmg =
 				Multiplier = 1
 			},
 		},
-		AddOutgoingDamageModifiersArray =
-		{
+		ActivatedDamageFloor = 
+		{ 
+			BaseValue = 10,
+			MultipliedByElement = "Air",
+			AsInt = true,
+			IdenticalMultiplier =
 			{
-				ValidProjectiles = WeaponSets.OlympianProjectileNames,
-				ValidWeaponMultiplier =
-				{
-					BaseValue = 1.0625,
-					SourceIsMultiplier = true,
-					MultipliedByElement = "Earth",
-					IdenticalMultiplier =
-					{
-						Value = DuplicateMultiplier,
-					},
-				},
-				ReportValues = { ReportedMultiplier = "ValidWeaponMultiplier"}
+				Value = DuplicateWeakMultiplier,
 			},
-			{
-				ValidEffects = WeaponSets.OlympianEffectNames,
-				ValidWeaponMultiplier =
-				{
-					BaseValue = 1.0625,
-					SourceIsMultiplier = true,
-					MultipliedByElement = "Earth",
-					IdenticalMultiplier =
-					{
-						Value = DuplicateMultiplier,
-					},
-				}
-			}
 		},
 		StatLines =
 		{
-			"EarthOlympianDamageStatDisplay1"
+			"DamageFloorStatDisplay1",
 		},
 		ExtractValues =
 		{
 			{
-				Key = "ReportedMultiplier",
-				ExtractAs = "Multiplier",
-				Format = "PercentDelta",
+				Key = "ActivatedDamageFloor",
+				ExtractAs = "TooltipFloor",
 			},
 		}
 	},
@@ -157,57 +137,6 @@ local Rally =
 }
 
 
--- Air Quality: ElementalDamageFloorBoon
-local dmgFloor =
-{
-	ElementalDamageFloorBoon = 
-	{
-		InheritFrom = {"UnityTrait"},
-		Icon = "Boon_Zeus_31",
-		GameStateRequirements = 
-		{
-			{
-				Path = { "CurrentRun", "Hero", "Elements", "Air" },
-				Comparison = ">=",
-				Value = 3,
-			},
-		},
-		ElementalMultipliers =
-		{
-			Air = true,
-		},
-		RarityLevels =
-		{
-			Common =
-			{
-				Multiplier = 1
-			},
-		},
-		ActivatedDamageFloor = 
-		{ 
-			BaseValue = 10,
-			MultipliedByElement = "Air",
-			AsInt = true,
-			IdenticalMultiplier =
-			{
-				Value = DuplicateWeakMultiplier,
-			},
-		},
-		StatLines =
-		{
-			"DamageFloorStatDisplay1",
-		},
-		ExtractValues =
-		{
-			{
-				Key = "ActivatedDamageFloor",
-				ExtractAs = "TooltipFloor",
-			},
-		}
-	},
-}
-
-
 -- Frosty Veneer: ElementalDamageCapBoon
 local dmgCap =
 {
@@ -265,8 +194,95 @@ local dmgCap =
 			},
 		}
 	},
-
 }
+
+
+-- Rallying Cry: ElementalOlympianDamageBoon
+local olympianDmg =
+{
+	ElementalOlympianDamageBoon =
+	{
+		InheritFrom = {"UnityTrait"},
+		Icon = "Boon_Ares_40",
+		GameStateRequirements = 
+		{
+			{
+				Path = { "CurrentRun", "Hero", "Elements", "Earth" },
+				Comparison = ">=",
+				Value = 4,
+			},
+		},
+		ElementalMultipliers =
+		{
+			Earth = true,
+		},
+		RarityLevels =
+		{
+			Common =
+			{
+				Multiplier = 1
+			},
+		},
+		AddOutgoingDamageModifiersArray =
+		{
+			{
+				ValidProjectiles = WeaponSets.OlympianProjectileNames,
+				ValidWeaponMultiplier =
+				{
+					BaseValue = 1.0625,
+					SourceIsMultiplier = true,
+					MultipliedByElement = "Earth",
+					IdenticalMultiplier =
+					{
+						Value = DuplicateMultiplier,
+					},
+				},
+				ReportValues = { ReportedMultiplier = "ValidWeaponMultiplier"}
+			},
+			{
+				ValidEffects = WeaponSets.OlympianEffectNames,
+				ValidWeaponMultiplier =
+				{
+					BaseValue = 1.0625,
+					SourceIsMultiplier = true,
+					MultipliedByElement = "Earth",
+					IdenticalMultiplier =
+					{
+						Value = DuplicateMultiplier,
+					},
+				}
+			}
+		},
+		StatLines =
+		{
+			"EarthOlympianDamageStatDisplay1"
+		},
+		ExtractValues =
+		{
+			{
+				Key = "ReportedMultiplier",
+				ExtractAs = "Multiplier",
+				Format = "PercentDelta",
+			},
+		}
+	},
+}
+
+
+local trait = rom.path.combine(rom.paths.Content, 'Game/Text/en/TraitText.en.sjson')
+sjson.hook(trait, function(data)
+	return sjson_TraitText_AirQuality(data)
+end)
+sjson.hook(trait, function(data)
+	return sjson_TraitText_SelfHealing(data)
+end)
+sjson.hook(trait, function(data)
+	return sjson_TraitText_FrostyVeneer(data)
+end)
+sjson.hook(trait, function(data)
+	return sjson_TraitText_RallyingCry(data)
+end)
+
 
 game.OverwriteTableKeys(game.TraitData, olympianDmg)
 game.OverwriteTableKeys(game.TraitData, Rally)
