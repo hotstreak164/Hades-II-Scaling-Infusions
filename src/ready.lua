@@ -93,7 +93,7 @@ local olympianDmg =
 -- Self Healing: ElementalRallyBoon
 local Rally =
 {
-		ElementalRallyBoon = 
+	ElementalRallyBoon =
 	{
 		InheritFrom = {"UnityTrait"},
 		Icon = "Boon_Apollo_34",
@@ -128,7 +128,7 @@ local Rally =
 					BaseValue = 0.1,
 					MultipliedByElement = "Fire",
 				},
-				--[[IdenticalMultiplier =
+				--[[ IdenticalMultiplier =
 				{
 					Value = DuplicateWeakMultiplier,
 				},]]
@@ -156,7 +156,58 @@ local Rally =
 	},
 }
 
+
+local dmgFloor =
+{
+	ElementalDamageFloorBoon = 
+	{
+		InheritFrom = {"UnityTrait"},
+		Icon = "Boon_Zeus_31",
+		GameStateRequirements = 
+		{
+			{
+				Path = { "CurrentRun", "Hero", "Elements", "Air" },
+				Comparison = ">=",
+				Value = 3,
+			},
+		},
+		ElementalMultipliers =
+		{
+			Air = true,
+		},
+		RarityLevels =
+		{
+			Common =
+			{
+				Multiplier = 1
+			},
+		},
+		ActivatedDamageFloor = 
+		{ 
+			BaseValue = 10,
+			MultipliedByElement = "Air",
+			AsInt = true,
+			IdenticalMultiplier =
+			{
+				Value = DuplicateWeakMultiplier,
+			},
+		},
+		StatLines =
+		{
+			"DamageFloorStatDisplay1",
+		},
+		ExtractValues =
+		{
+			{
+				Key = "ActivatedDamageFloor",
+				ExtractAs = "TooltipFloor",
+			},
+		}
+	},
+}
+
 game.OverwriteTableKeys(game.TraitData, olympianDmg)
 game.OverwriteTableKeys(game.TraitData, Rally)
+game.OverwriteTableKeys(game.TraitData, dmgFloor)
 
 game.SetupRunData()
