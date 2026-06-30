@@ -33,7 +33,7 @@ local olympianDmg =
 				Value = 4,
 			},
 		},
-		ELelmentalMultipliers =
+		ElelmentalMultipliers =
 		{
 			Earth = true,
 		},
@@ -89,10 +89,74 @@ local olympianDmg =
 	},
 }
 
+
+-- Self Healing: ElementalRallyBoon
+local Rally =
+{
+		ElementalRallyBoon = 
+	{
+		InheritFrom = {"UnityTrait"},
+		Icon = "Boon_Apollo_34",
+		GameStateRequirements = 
+		{
+			{
+				Path = { "CurrentRun", "Hero", "Elements", "Fire" },
+				Comparison = ">=",
+				Value = 2,
+			},
+		},
+		ElelmentalMultipliers =
+		{
+			Fire = true,
+		},
+		RarityLevels =
+		{
+			Common =
+			{
+				Multiplier = 1
+			},
+		},
+		
+		OnSelfDamagedFunction = 
+		{
+			Name = "FireRallyHeal",
+			FunctionArgs = 
+			{
+				Duration = 5,
+				Multiplier =
+				{
+					BaseValue = 0.1,
+					MultipliedByElement = "Fire",
+				},
+				--[[IdenticalMultiplier =
+				{
+					Value = DuplicateWeakMultiplier,
+				},]]
+				ReportValues = { ReportedMultiplier = "Multiplier", ReportedDuration = "Duration"},
+			}
+		},
+		StatLines =
+		{
+			"HealOverTimeStatDisplay1",
+		},
+		ExtractValues =
+		{
+			{
+				Key = "ReportedMultiplier",
+				ExtractAs = "TooltipMultiplier",
+				Format = "Percent",
+				HideSigns = true,
+			},
+			{
+				Key = "ReportedDuration",
+				ExtractAs = "TooltipDuration",
+				SkipAutoExtract = true
+			},
+		}
+	},
+}
+
 game.OverwriteTableKeys(game.TraitData, olympianDmg)
-
-
-
-
+game.OverwriteTableKeys(game.TraitData, Rally)
 
 game.SetupRunData()
