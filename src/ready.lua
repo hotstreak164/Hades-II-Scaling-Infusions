@@ -33,7 +33,7 @@ local olympianDmg =
 				Value = 4,
 			},
 		},
-		ElelmentalMultipliers =
+		ElementalMultipliers =
 		{
 			Earth = true,
 		},
@@ -105,7 +105,7 @@ local Rally =
 				Value = 2,
 			},
 		},
-		ElelmentalMultipliers =
+		ElementalMultipliers =
 		{
 			Fire = true,
 		},
